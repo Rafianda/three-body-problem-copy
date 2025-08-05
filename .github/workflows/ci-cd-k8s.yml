@@ -12,14 +12,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        include:
-          - name: frontend
-            path: frontend
-          - name: backend-go
-            path: go
-          - name: backend-laravel
-            path: laravel
-
+        service: [frontend, backend-go, backend-laravel]
+        
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
