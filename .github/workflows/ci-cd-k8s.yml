@@ -33,7 +33,7 @@ jobs:
         with:
           context: ./${{ matrix.service }}
           push: true
-          tags: ghcr.io/${{ github.actor }}/${{ matrix.service }}:latest
+          tags: ghcr.io/rafianda/${{ matrix.service }}:latest
 
   deploy-to-k8s:
     needs: build-and-push
