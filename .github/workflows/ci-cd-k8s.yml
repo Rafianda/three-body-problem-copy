@@ -16,9 +16,9 @@ jobs:
           - name: frontend
             path: frontend
           - name: backend-go
-            path: backend-go
+            path: go
           - name: backend-laravel
-            path: backend-laravel
+            path: laravel
 
     steps:
       - name: Checkout repo
