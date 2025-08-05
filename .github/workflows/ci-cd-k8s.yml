@@ -1,0 +1,64 @@
+# .github/workflows/ci-cd-k8s.yml
+
+name: Build & Deploy to Kubernetes
+
+on:
+  push:
+    branches: [main]
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_OWNER: rafianda
+  NAMESPACE: three-body
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        service: [frontend, backend-go, backend-laravel]
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push ${{ matrix.service }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.service }}
+          push: true
+          tags: ghcr.io/${{ env.IMAGE_OWNER }}/${{ matrix.service }}:latest
+
+  deploy-to-k8s:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.29.0'
+
+      - name: Set up Kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
+
+      - name: Apply manifests to Kubernetes
+        run: |
+          kubectl apply -n ${{ env.NAMESPACE }} -f k8s/
+
+      - name: Wait for deployments to be ready
+        run: |
+          kubectl rollout status deployment/frontend -n ${{ env.NAMESPACE }}
+          kubectl rollout status deployment/backend-go -n ${{ env.NAMESPACE }}
+          kubectl rollout status deployment/backend-laravel -n ${{ env.NAMESPACE }}
