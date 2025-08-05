@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        service: [frontend, backend-go, backend-laravel]
+        service: [frontend, go, laravel]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
