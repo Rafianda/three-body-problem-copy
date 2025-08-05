@@ -33,7 +33,7 @@ jobs:
         with:
           context: ./${{ matrix.service }}
           push: true
-          tags: ghcr.io/rafianda/${{ matrix.service }}:latest
+          tags: ${{ secrets.DOCKER_USER }}/${{ matrix.service }}:latest
 
   deploy-to-k8s:
     needs: build-and-push
