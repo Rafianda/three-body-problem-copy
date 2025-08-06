@@ -321,3 +321,12 @@ func main() {
 		log.Fatalf("Server failed: %s", err)
 	}
 }
+
+func init() {
+	// Buat file log
+	logFile, err := os.OpenFile("/var/log/app.log", os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+	if err != nil {
+		log.Fatalf("Failed to open log file: %s", err)
+	}
+	log.SetOutput(logFile) // Arahkan log.Println ke file
+}
