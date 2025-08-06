@@ -9,8 +9,11 @@ metadata:
   name: mysql-secret
   namespace: three-body
 type: Opaque
-data:
-  MYSQL_ROOT_PASSWORD: c2VjcmV0
+stringData:
+  MYSQL_ROOT_PASSWORD: password
+  MYSQL_DATABASE: laravel
+  MYSQL_USER: root
+  MYSQL_PASSWORD: password
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -35,6 +38,21 @@ spec:
                 secretKeyRef:
                   name: mysql-secret
                   key: MYSQL_ROOT_PASSWORD
+            - name: MYSQL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_DATABASE
+            - name: MYSQL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_USER
+            - name: MYSQL_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mysql-secret
+                  key: MYSQL_PASSWORD
           ports:
             - containerPort: 3306
           volumeMounts:
@@ -50,10 +68,13 @@ metadata:
   name: mysql
   namespace: three-body
 spec:
+  type: NodePort
   selector:
     app: mysql
   ports:
     - port: 3306
+      targetPort: 3306
+      nodePort: 30306
 ---
 apiVersion: apps/v1
 kind: Deployment
