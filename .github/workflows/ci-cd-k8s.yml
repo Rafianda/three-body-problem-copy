@@ -38,7 +38,7 @@ jobs:
 
   deploy-to-k8s:
     needs: build-and-push
-    runs-on: [self-hosted, linux, k8s-runner]
+    runs-on: self-hosted
 
     steps:
       - name: Checkout repo
