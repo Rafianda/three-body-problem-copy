@@ -110,7 +110,7 @@ spec:
         - name: backend-laravel
           image: yudasumbowo/laravel:latest
           ports:
-            - containerPort: 9000
+            - containerPort: 8001
           readinessProbe:
             httpGet:
               path: /
@@ -127,7 +127,7 @@ spec:
   selector:
     app: backend-laravel
   ports:
-    - port: 9000
+    - port: 8001
 ---
 apiVersion: apps/v1
 kind: Deployment
