@@ -15,5 +15,5 @@ RUN mkdir -p /var/cache/nginx/client_temp && \
 
 # 🔐 Jalankan sebagai user non-root
 USER nginx
+EXPOSE 8080
 
-EXPOSE 80
