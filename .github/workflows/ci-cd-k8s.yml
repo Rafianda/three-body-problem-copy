@@ -49,11 +49,6 @@ jobs:
         with:
           version: 'v1.29.0'
 
-      - name: Set up kubeconfig
-        run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > ~/.kube/config
-
       - name: Deploy to Kubernetes
         run: |
           kubectl apply -n ${{ env.NAMESPACE }} -f k8s/
