@@ -12,6 +12,7 @@ FROM alpine
 WORKDIR /app
 COPY --from=builder /app/app .
 COPY --from=builder /app/.env .env
+RUN mkdir -p /var/log && chmod 777 /var/log
 USER nobody
 EXPOSE 8080
 CMD ["./app"]
