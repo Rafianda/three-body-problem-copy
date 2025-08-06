@@ -51,11 +51,5 @@ jobs:
 
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -n ${{ env.NAMESPACE }} -f k8s/
-
-      - name: Wait for deployments to be ready
-        run: |
-          kubectl rollout status deployment/frontend -n ${{ env.NAMESPACE }}
-          kubectl rollout status deployment/backend-go -n ${{ env.NAMESPACE }}
-          kubectl rollout status deployment/backend-laravel -n ${{ env.NAMESPACE }}
+          kubectl replace --force -f k8s/ci-cd-k8s.yml -n ${{ env.NAMESPACE }}
 
