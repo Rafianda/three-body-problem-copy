@@ -8,7 +8,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_OWNER: rafianda
+  IMAGE_OWNER: yudasumbowo
   NAMESPACE: three-body
 
 jobs:
@@ -34,6 +34,8 @@ jobs:
           push: true
           tags: yudasumbowo/${{ matrix.service }}:latest
 
+# .github/workflows/ci-cd-k8s.yml
+
   deploy-to-k8s:
     needs: build-and-push
     runs-on: [self-hosted, linux, k8s-runner]
@@ -42,8 +44,23 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+        with:
+          version: 'v1.29.0'
+
+      - name: Set up kubeconfig
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > ~/.kube/config
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl apply -n ${{ env.NAMESPACE }} -f k8s/
+
       - name: Wait for deployments to be ready
         run: |
           kubectl rollout status deployment/frontend -n ${{ env.NAMESPACE }}
           kubectl rollout status deployment/backend-go -n ${{ env.NAMESPACE }}
           kubectl rollout status deployment/backend-laravel -n ${{ env.NAMESPACE }}
+
