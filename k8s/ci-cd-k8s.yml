@@ -113,7 +113,7 @@ spec:
             - containerPort: 8001
           readinessProbe:
             httpGet:
-              path: /
+              path: /api/products
               port: 8001
             initialDelaySeconds: 10
             periodSeconds: 5
