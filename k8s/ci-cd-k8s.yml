@@ -71,7 +71,7 @@ spec:
     spec:
       containers:
         - name: backend-go
-          image: ghcr.io/rafianda/backend-go:latest
+          image: yudasumbowo/go:latest
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -108,7 +108,7 @@ spec:
     spec:
       containers:
         - name: backend-laravel
-          image: ghcr.io/rafianda/backend-laravel:latest
+          image: yudasumbowo/laravel:latest
           ports:
             - containerPort: 9000
           readinessProbe:
@@ -145,7 +145,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/rafianda/frontend:latest
+          image: yudasumbowo/frontend:latest
           ports:
             - containerPort: 80
 ---
