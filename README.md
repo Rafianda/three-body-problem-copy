@@ -173,3 +173,8 @@ Setiap service memiliki panel tersendiri berdasarkan label `filename` atau `job`
 
 ---
 
+## 📁 Topologi Arsitektur DR dan DRC 
+
+![Body Problem](https://github.com/user-attachments/assets/dded5ae9-5000-4869-be26-ee3a18aaa5cf)
+
+
